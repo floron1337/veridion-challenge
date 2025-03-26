@@ -39,14 +39,6 @@ The program outputs multiple groups, each containing one or more website logos. 
 - **Coverage and Accuracy:**
 The intended goal is to extract logos for more than 97% of websites in the dataset. A robust grouping method will ensure that logos which are visually similar—even with some variation—get paired correctly.
 
-## Technical Stack
-- **Programming Language:** Python 3.12.3
-- **Libraries and Tools:**
-    - Image Processing: Pillow
-    - Deep Learning: Keras with models such as VGG16 and ResNet50V2 from the Keras applications module
-    - Data Manipulation: pandas
-    - Clustering and Similarity: Sklearn
-
 ## Considerations and Next Steps
 - **Extending the Approach:**
 Experimenting with various similarity thresholds, exploring additional image features, or combining multiple methods could further refine group accuracy. Also, the storage and processing mechanisms can be improved to reduce the time and space complexity of the solution.
@@ -54,6 +46,22 @@ Experimenting with various similarity thresholds, exploring additional image fea
 While the current solution is built for a manageable dataset size, the underlying approach and methodology are chosen with scalability and modularity in mind, making it easy to improve the current codebase without breaking pre-existing software built on top of it.
 - **Evaluation:**
 The final solution should be evaluated not only on quantitative metrics, such as grouping accuracy, but also on qualitative assessments by human reviewers to ensure the grouped logos are intuitively similar.
+
+## Thought Process and Difficulties
+
+Developing this solution involved a careful balance between achieving accuracy in logo similarity and ensuring the overall system remains both robust and scalable. Here are some insights into the thought process and challenges encountered during development:
+
+- **Obtaining the logo:**  
+  Initially, I attempted to scrape the web for each logo, but the results were inconsistent and of low quality. Although I could have used an upscaler to improve the images, I discovered a simpler and more time-efficient solution: using a free online API to download each company's logo, which provided good accuracy. Please DM me if you'd like me to develop my own web scraper for this project.
+
+- **Feature Extraction Complexity:**  
+  I needed a reliable metric to group images, so I used pretrained CNN models such as VGG16 or ResNet50 to efficiently extract visual features. However, tuning the model required several experiments to balance detail and abstraction appropriately. Ultimately, VGG16 was chosen through trial and error.
+
+- **Background Removal:**  
+  The varied and noisy backgrounds in the logo images necessitated a reliable background removal process. Establishing an effective cleanup workflow was particularly challenging due to differences in image quality and design, which are critical to ensure that only the essential features contribute to the similarity comparison. I also found it curious that background removal is more resource-intensive in terms of hardware and time than feature extraction and grouping, suggesting there is room for improvement in this area.
+
+- **Choice of Similarity Metrics:**  
+  Two primary methods were explored: cosine similarity and clustering. Determining an optimal similarity threshold for cosine similarity was non-trivial; it required iterative testing to find a balance that accurately groups logos without over-clustering dissimilar images. One advantage of cosine similarity is that it allows the program to determine the necessary number of groups dynamically, rather than restricting it to a fixed number of clusters.
 
 ## Conclusion
 This project demonstrates a comprehensive approach to matching and grouping websites by the similarity of their logos. By combining effective preprocessing, deep feature extraction, and simple yet powerful similarity metrics, the solution provides a robust foundation to identify related brands based on visual identity. The creative flexibility in using various tools and methods positions this approach as a promising solution for scalable real-world applications.
